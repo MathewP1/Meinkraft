@@ -30,7 +30,7 @@ configure_file(include/config.h.in config.h)
 # Find SFML shared libraries
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
-add_executable(meinkraft src/main.cpp)
+add_executable(meinkraft src/main.cpp include/renderer.h)
 
 target_include_directories(meinkraft
         PRIVATE
