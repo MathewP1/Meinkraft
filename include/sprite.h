@@ -15,11 +15,10 @@ class Sprite {
 public:
     explicit Sprite(const sf::Image& image);
     static std::unique_ptr<Sprite> create(const std::string& image_path);
-    const uint8_t* getBuffer();
+    std::unique_ptr<uint32_t[]> getBuffer(); // TODO: this should probably copy buffer to caller and std::move memory
 private:
     uint32_t width_, height_;
     std::unique_ptr<uint32_t[]> pixel_buffer_;
-    uint8_t* pixel_buffer_ptr_;
 };
 
 #endif //MEINKRAFT_SPRITE_H

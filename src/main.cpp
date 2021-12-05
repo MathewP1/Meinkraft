@@ -3,14 +3,17 @@
 #include "config.h"
 #include "game.h"
 
+// TODO: FIX SPRITE AND SPRITESHEET
+
 // TODO:
 //  1. Create color palette_ DONE
 //  2. Render images using color palette_ DONE
-//  3. Calculate frametimes, add State and SpriteSheet, Color, Renderer (draw sprite, fillRect, light)
-//  4. implement ticks, updates and renders class GameObject { virtual void Tick(), Update(), Render() }
-//  5. Add GameState { virtual void Tick(), Update(), Render() }
-//  6. Add character that can move up, down, left, right
-//  7. Add light source to character and apply lighting with dithering
+//  3. Calculate frametimes, add State DONE
+//  4. SpriteSheet, Color, Renderer (draw sprite, fillRect, light), Entity (pos, width, height), RenderEntity(buffer, buffer_ptr), PhysicalEntity(collisions)
+//  5. implement ticks, updates and renders class GameObject { virtual void Tick(), Update(), Render() }
+//  6. Add GameState { virtual void Tick(), Update(), Render() }
+//  7. Add character that can move up, down, left, right
+//  8. Add light source to character and apply lighting with dithering
 
 // tick - calculate how much movement, etc
 // update - apply movement

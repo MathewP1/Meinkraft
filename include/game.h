@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include "renderer.h"
+#include "keyboard_handler.h"
 
 #ifndef MEINKRAFT_GAME_H
 #define MEINKRAFT_GAME_H
@@ -22,6 +23,8 @@ public:
 private:
     int width_;
     int height_;
+    KeyboardHandler keyboard_handler_;
+    void handleEvents(sf::RenderWindow& game_window);
 };
 
 #endif //MEINKRAFT_GAME_H

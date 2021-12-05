@@ -4,9 +4,12 @@
 #include <cstring>
 
 #include "game.h"
-#include "keyboard_handler.h"
+#include "state.h"
+#include "game_state.h"
+
 
 namespace {
+    const int UPDATES_PER_SECOND = 60;
     struct Window {
         const unsigned int height = 1024;
         const unsigned int width = 1024;
@@ -49,8 +52,18 @@ std::unique_ptr<Game> Game::create() {
     return std::make_unique<Game>();
 }
 
+void Game::handleEvents(sf::RenderWindow& game_window) {
+    sf::Event event{};
+    while (game_window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            game_window.close();
+            return;
+        }
+        keyboard_handler_.handleInput(event);
+    }
+}
+
 void Game::run() {
-    KeyboardHandler keyboard_handler;
     Window window(width_, height_);
 
     auto& game_window = window.window;
@@ -60,25 +73,31 @@ void Game::run() {
         game_buffer_ptr[i] = 0xFFFFFFFF;
     }
 
-
+    StateManager state_manager(std::make_unique<GameState>());
+    state_manager.getCurrentState()->init();
     sf::Clock clock;
-    sf::Time delta_time;
+    sf::Time time_since_update = sf::Time::Zero;
+    sf::Time update_time_step = sf::seconds(1.f / UPDATES_PER_SECOND);
     // enter game loop
     while(game_window.isOpen()) {
         // handle event regardless of the state
-        sf::Event event{};
-        while (game_window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                game_window.close();
-                return;
-            }
-            keyboard_handler.handleInput(event);
-        }
+        handleEvents(game_window);
 
         // handle state change (ScheduleStateChange(nextState))
 
-        // update, draw for current state
+        time_since_update += clock.restart();
+        while (time_since_update >= update_time_step) {
+            time_since_update -= update_time_step;
+            handleEvents(game_window);
 
+            // update
+            state_manager.updateState();
+            state_manager.getCurrentState()->update();
+        }
+
+
+        // draw for current state
+        state_manager.getCurrentState()->draw();
 
 
         window.display();

@@ -25,38 +25,66 @@ class KeyboardHandler {
 public:
     void handleInput(sf::Event& event) {
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Up) {
-                pressed_keys.insert(Direction::UP);
-            }
-            if (event.key.code == sf::Keyboard::Down) {
-                pressed_keys.insert(Direction::DOWN);
-            }
-            if (event.key.code == sf::Keyboard::Left) {
-                pressed_keys.insert(Direction::LEFT);
-            }
-            if (event.key.code == sf::Keyboard::Right) {
-                pressed_keys.insert(Direction::RIGHT);
-            }
+            handleDirectionPress(event);
         }
         if (event.type == sf::Event::KeyReleased) {
-            if (event.key.code == sf::Keyboard::Up) {
-                pressed_keys.erase(Direction::UP);
-            }
-            if (event.key.code == sf::Keyboard::Down) {
-                pressed_keys.erase(Direction::DOWN);
-            }
-            if (event.key.code == sf::Keyboard::Left) {
-                pressed_keys.erase(Direction::LEFT);
-            }
-            if (event.key.code == sf::Keyboard::Right) {
-                pressed_keys.erase(Direction::RIGHT);
-            }
+            handleDirectionRelease(event);
         }
+        calculateDirection();
+    }
 
-//        for (auto dir : pressed_keys) {
-//            std::cout << getDirectionString(dir) << " ";
-//        }
-//        std::cout << std::endl;
+    static std::string getDirectionString(Direction dir) {
+        if (dir == Direction::UP) {
+            return "up";
+        } else if (dir == Direction::DOWN) {
+            return "down";
+        } else if (dir == Direction::RIGHT) {
+            return  "right";
+        } else if (dir == Direction::LEFT){
+            return "left";
+        }
+        return "none";
+    }
+
+    PlayerDirection getPlayerDirection() {
+        return player_direction;
+    }
+
+private:
+    std::set<Direction> pressed_keys;
+    PlayerDirection player_direction;
+
+    void handleDirectionPress(sf::Event& event) {
+        if (event.key.code == sf::Keyboard::Up) {
+            pressed_keys.insert(Direction::UP);
+        }
+        if (event.key.code == sf::Keyboard::Down) {
+            pressed_keys.insert(Direction::DOWN);
+        }
+        if (event.key.code == sf::Keyboard::Left) {
+            pressed_keys.insert(Direction::LEFT);
+        }
+        if (event.key.code == sf::Keyboard::Right) {
+            pressed_keys.insert(Direction::RIGHT);
+        }
+    }
+
+    void handleDirectionRelease(sf::Event& event) {
+        if (event.key.code == sf::Keyboard::Up) {
+            pressed_keys.erase(Direction::UP);
+        }
+        if (event.key.code == sf::Keyboard::Down) {
+            pressed_keys.erase(Direction::DOWN);
+        }
+        if (event.key.code == sf::Keyboard::Left) {
+            pressed_keys.erase(Direction::LEFT);
+        }
+        if (event.key.code == sf::Keyboard::Right) {
+            pressed_keys.erase(Direction::RIGHT);
+        }
+    }
+
+    void calculateDirection() {
         int vertical = 1;
         int horizontal = 1;
         if (pressed_keys.count(Direction::UP)) {
@@ -88,25 +116,4 @@ public:
             player_direction.horizontal = Direction::NONE;
         }
     }
-
-    static std::string getDirectionString(Direction dir) {
-        if (dir == Direction::UP) {
-            return "up";
-        } else if (dir == Direction::DOWN) {
-            return "down";
-        } else if (dir == Direction::RIGHT) {
-            return  "right";
-        } else if (dir == Direction::LEFT){
-            return "left";
-        }
-        return "none";
-    }
-
-    PlayerDirection getPlayerDirection() {
-        return player_direction;
-    }
-
-private:
-    std::set<Direction> pressed_keys;
-    PlayerDirection player_direction;
 };
