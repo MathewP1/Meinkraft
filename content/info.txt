@@ -1,0 +1,6 @@
+colors in sprites
+
+(0x00 00 00)
+(0x50 50 50)
+(0x90 90 90)
+(0xdb db db)
