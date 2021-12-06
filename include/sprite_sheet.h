@@ -18,7 +18,6 @@ private:
     uint32_t sprite_size_;
     uint32_t rows_, columns_;
     std::unique_ptr<uint32_t[]> pixel_buffer_;
-    uint8_t* pixel_buffer_ptr_;
 };
 
 #endif //MEINKRAFT_SPRITE_SHEET_H

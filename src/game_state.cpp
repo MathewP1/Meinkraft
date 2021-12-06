@@ -14,12 +14,13 @@ bool GameState::init() {
     if (!player_sprite_) {
         return false;
     }
-    auto buffer = player_sprite_->getBuffer();
-    for (int i = 0; i < 16; ++i) {
-        for (int j = 0; j < 16; ++j) {
-            std::cout << std::setfill('0') << std::setw(8) << std::hex << buffer[i * 16 + j] << std::endl;
-        }
-    }
+
+//    auto buffer = player_sprite_->getBuffer();
+//    for (int i = 0; i < 16; ++i) {
+//        for (int j = 0; j < 16; ++j) {
+//            std::cout << std::setfill('0') << std::setw(8) << std::hex << buffer[i * 16 + j] << std::endl;
+//        }
+//    }
 
     return true;
 }

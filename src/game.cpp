@@ -9,54 +9,25 @@
 
 
 namespace {
-    const int UPDATES_PER_SECOND = 60;
-    struct Window {
-        const unsigned int height = 1024;
-        const unsigned int width = 1024;
-        const unsigned int color_channels = 4;
-
-        sf::RenderWindow window;
-        sf::Texture texture;
-        sf::Sprite sprite;
-
-        float scale_x, scale_y;
-
-        std::unique_ptr<unsigned char[]> window_buffer; // ABGR
-
-        void display() {
-            texture.update(window_buffer.get());
-            sprite.setTexture(texture);
-            sprite.setScale(scale_x, scale_y);
-            window.draw(sprite);
-            window.display();
-        }
-
-        Window(int game_width, int game_height) {
-            window_buffer = std::make_unique<unsigned char[]>(game_width * game_height * color_channels);
-            window.create(sf::VideoMode(width, height), "Can't see");
-
-            texture.create(game_width, game_height);
-
-            scale_x = width / game_width;
-            scale_y = height / game_height;
-        }
-    };
+    const int UPDATES_PER_SECOND = 60; // TODO: maybe move this to config.h?
 }
 
 Game::Game() {
     width_ = 128;
     height_ = 128;
+    window_ = std::make_unique<Window>(width_, height_);
 }
 
 std::unique_ptr<Game> Game::create() {
     return std::make_unique<Game>();
 }
 
-void Game::handleEvents(sf::RenderWindow& game_window) {
+void Game::handleEvents() {
     sf::Event event{};
-    while (game_window.pollEvent(event)) {
+    sf::RenderWindow& window = window_->getWindow();
+    while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
-            game_window.close();
+            window_->getWindow().close();
             return;
         }
         keyboard_handler_.handleInput(event);
@@ -64,13 +35,11 @@ void Game::handleEvents(sf::RenderWindow& game_window) {
 }
 
 void Game::run() {
-    Window window(width_, height_);
 
-    auto& game_window = window.window;
-    auto* game_buffer_ptr = reinterpret_cast<uint32_t*>(window.window_buffer.get()); // this is how everything gets drawn
+    auto* game_buffer = window_->getBufferPtr(); // this is how everything gets drawn
 
     for (int i = 0; i < width_ * height_; ++i) {
-        game_buffer_ptr[i] = 0xFFFFFFFF;
+        game_buffer[i] = 0xFFFFFFFF;
     }
 
     StateManager state_manager(std::make_unique<GameState>());
@@ -79,16 +48,16 @@ void Game::run() {
     sf::Time time_since_update = sf::Time::Zero;
     sf::Time update_time_step = sf::seconds(1.f / UPDATES_PER_SECOND);
     // enter game loop
-    while(game_window.isOpen()) {
+    while(window_->getWindow().isOpen()) {
         // handle event regardless of the state
-        handleEvents(game_window);
+        handleEvents();
 
         // handle state change (ScheduleStateChange(nextState))
 
         time_since_update += clock.restart();
         while (time_since_update >= update_time_step) {
             time_since_update -= update_time_step;
-            handleEvents(game_window);
+            handleEvents();
 
             // update
             state_manager.updateState();
@@ -100,6 +69,6 @@ void Game::run() {
         state_manager.getCurrentState()->draw();
 
 
-        window.display();
+        window_->display();
     }
 }

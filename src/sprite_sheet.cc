@@ -10,27 +10,27 @@ SpriteSheet::SpriteSheet(const sf::Image &image, int sprite_size) {
     height_ = image.getSize().y;
     rows_ = height_ / sprite_size_;
     columns_ = width_ / sprite_size_;
-    pixel_buffer_ = std::make_unique<uint32_t[]>(width_ * height_ / 8);
-    pixel_buffer_ptr_ = reinterpret_cast<uint8_t*>(pixel_buffer_.get());
+    pixel_buffer_ = std::make_unique<uint32_t[]>(width_ * height_);
 
     const auto* image_pixels = image.getPixelsPtr();
 
     // TODO: replace with memcpy
     for (int i = 0; i < width_ * height_; ++i) {
-        pixel_buffer_ptr_[i] = (image_pixels[i] & 0xFF) / 64;
+        pixel_buffer_[i] = (image_pixels[i] & 0xFF) / 64;
     }
 }
 
+// TODO: maybe don't need to copy this?
+// (since when colored uint8_t[] can be used to hold buffer, it will only hold palette indices)
 std::unique_ptr<uint32_t[]> SpriteSheet::getBuffer(int sprite_index) {
     int pos_x = sprite_index % columns_;
     int pos_y = (sprite_index - pos_x) / rows_;
 
-    auto out_buffer = std::make_unique<uint32_t[]>(sprite_size_ * sprite_size_ / 8);
-    auto out_buffer_ptr = reinterpret_cast<uint8_t*>(out_buffer.get());
+    auto out_buffer = std::make_unique<uint32_t[]>(sprite_size_ * sprite_size_);
     int out_i = 0;
     for (int i = pos_x * sprite_size_; i < (pos_x + 1) * sprite_size_; ++i) {
         for (int j = pos_y * sprite_size_; j < (pos_y + 1) * sprite_size_; ++j) {
-            out_buffer_ptr[out_i++] = pixel_buffer_ptr_[i * width_ + j];
+            out_buffer[out_i++] = pixel_buffer_[i * width_ + j];
         }
     }
 

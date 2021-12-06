@@ -30,7 +30,7 @@ configure_file(include/config.h.in config.h)
 # Find SFML shared libraries
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 
-add_executable(meinkraft src/main.cpp include/renderer.h include/sprite.h src/sprite.cpp include/game.h src/game.cpp include/keyboard_handler.h include/state.h include/game_state.h src/game_state.cpp include/sprite_sheet.h src/sprite_sheet.cc)
+add_executable(meinkraft src/main.cpp include/renderer.h include/sprite.h src/sprite.cpp include/game.h src/game.cpp include/keyboard_handler.h include/state.h include/game_state.h src/game_state.cpp include/sprite_sheet.h src/sprite_sheet.cc include/window.h src/window.cpp)
 
 target_include_directories(meinkraft
         PRIVATE

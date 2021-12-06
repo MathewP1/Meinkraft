@@ -11,6 +11,8 @@
 
 // hold buffer of pixels in (0 - 3) range, each value represent
 // one of the 4 possible colors that can be used on sprite
+
+// sprites have the fixed width defined by game config
 class Sprite {
 public:
     explicit Sprite(const sf::Image& image);
