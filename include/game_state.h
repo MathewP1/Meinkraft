@@ -5,6 +5,7 @@
 #include "state.h"
 #include "sprite.h"
 #include "sprite_sheet.h"
+#include "entities/render_entity.h"
 
 #ifndef MEINKRAFT_GAME_STATE_H
 #define MEINKRAFT_GAME_STATE_H
@@ -18,8 +19,7 @@ public:
     ~GameState() override = default;
 
 private:
-    std::unique_ptr<Sprite> player_sprite_;
-    std::unique_ptr<SpriteSheet> sprite_sheet_;
+    std::unique_ptr<RenderEntity> entity_;
 
 
 };

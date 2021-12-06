@@ -26,6 +26,21 @@ void Renderer::fillRect(int x, int y, int w, int h, Color c) {
     }
 }
 
+void Renderer::drawSprite(Sprite& sprite, int x, int y, uint32_t color) {
+    std::cout << std::setfill('0') << std::setw(8) << std::hex << color << std::endl;
+    // TODO: temp solution - will draw at (0, 0)
+    for (int i = 0; i < 16; ++i) {
+        for (int j = 0; j < 16; ++j) {
+            int sprite_pixel = sprite.getBuffer()[i*16 + j]; // pixel will be in [0, 1, 2, 3]
+            if (sprite_pixel) {
+//                std::cout << (int)((color >> 16) & 0xFF) << std::endl;
+                pixels_[i * width_ + j] = (color >> (sprite_pixel * 8)) & 0xFF;
+            }
+
+        }
+    }
+}
+
 // TODO: tweak color palette
 void Renderer::generatePalette() {
     int i = 0;

@@ -9,6 +9,7 @@
 
 class Rect {
 public:
+    Rect(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {}
     uint32_t x, y, w, h;
 };
 

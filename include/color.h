@@ -3,6 +3,7 @@
 //
 
 #include <cstdint>
+#include <iostream>
 
 #ifndef MEINKRAFT_COLOR_H
 #define MEINKRAFT_COLOR_H
@@ -19,7 +20,7 @@ public:
         uint32_t abgr;
         uint32_t rgba;
         uint16_t limited_palette;
-        uint16_t palette_index;
+        uint8_t palette_index;
     };
 
     // constructors
@@ -40,6 +41,20 @@ public:
     Color& asABGR() { return *this; }
     Color& asLimitedPalette() { return *this; }
     Color& asPaletteIndex();
+
+    // util
+    static uint32_t getSpriteColor(int c0, int c1, int c2, int c3) {
+        std::cout << "c0: " << (int)(fromLimitedPalette(c0).asPaletteIndex().palette_index) << std::endl;
+        std::cout << "c1: " << (int)(fromLimitedPalette(c1).asPaletteIndex().palette_index) << std::endl;
+        std::cout << "c2: " << (int)(fromLimitedPalette(c2).asPaletteIndex().palette_index) << std::endl;
+        std::cout << "c3: " << (int)(fromLimitedPalette(c3).asPaletteIndex().palette_index) << std::endl;
+
+        return ((fromLimitedPalette(c0).asPaletteIndex().palette_index & 0xFF) << 24) |
+              ((fromLimitedPalette(c1).asPaletteIndex().palette_index & 0xFF) << 16) |
+              ((fromLimitedPalette(c2).asPaletteIndex().palette_index & 0xFF) << 8) |
+              (fromLimitedPalette(c3).asPaletteIndex().palette_index & 0xFF);
+    }
 };
+
 
 #endif //MEINKRAFT_COLOR_H

@@ -15,12 +15,14 @@
 // sprites have the fixed width defined by game config
 class Sprite {
 public:
+    Sprite() = default;
     explicit Sprite(const sf::Image& image);
     static std::unique_ptr<Sprite> create(const std::string& image_path);
-    uint32_t* getBuffer();
+    int* getBuffer();
+    std::unique_ptr<Sprite> clone();
 private:
     uint32_t width_, height_;
-    std::unique_ptr<uint32_t[]> pixel_buffer_;
+    std::unique_ptr<int[]> pixel_buffer_;
 };
 
 #endif //MEINKRAFT_SPRITE_H

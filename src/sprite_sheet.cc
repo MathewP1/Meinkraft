@@ -11,7 +11,7 @@ SpriteSheet::SpriteSheet(const sf::Image &image, int sprite_size) {
     rows_ = height_ / sprite_size_;
     columns_ = width_ / sprite_size_;
     pixel_buffer_ = std::make_unique<uint32_t[]>(width_ * height_);
-
+    // TODO: fix, this returns unsigned char* not uint32_t...
     const auto* image_pixels = image.getPixelsPtr();
 
     // TODO: replace with memcpy

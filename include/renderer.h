@@ -29,7 +29,7 @@ public:
 
     // drawing methods
     void fillRect(int x, int y, int w, int h, Color c); // for drawing simple rects
-    void drawSprite(Sprite& sprite, int x, int y, Color c) {}  // for drawing (whole) sprites
+    void drawSprite(Sprite& sprite, int x, int y, uint32_t c);  // for drawing (whole) sprites
     void drawPart(int x, int y, int w, int h, int sx, int sy) {}  // for use when needing to draw part of some buffer
     void drawPart(int x, int y, int w, int h, int sx, int sy, Color c) {} // for use with spritesheets
 
