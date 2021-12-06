@@ -13,7 +13,7 @@ class GameState : public State {
 public:
     bool init() override;
     void update() override;
-    void draw() override;
+    void draw(Renderer& renderer) override;
 
     ~GameState() override = default;
 

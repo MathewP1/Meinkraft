@@ -36,17 +36,18 @@ void Game::handleEvents() {
 
 void Game::run() {
 
-    auto* game_buffer = window_->getBufferPtr(); // this is how everything gets drawn
-
-    for (int i = 0; i < width_ * height_; ++i) {
-        game_buffer[i] = 0xFFFFFFFF;
-    }
-
+    // init state manager and set starting state
     StateManager state_manager(std::make_unique<GameState>());
     state_manager.getCurrentState()->init();
+
+    // init Renderer
+    Renderer renderer(width_, height_);
+
+    // time measurement stuff
     sf::Clock clock;
     sf::Time time_since_update = sf::Time::Zero;
     sf::Time update_time_step = sf::seconds(1.f / UPDATES_PER_SECOND);
+    renderer.fillRect(10, 10, 10, 10, Color::fromLimitedPalette(055));
     // enter game loop
     while(window_->getWindow().isOpen()) {
         // handle event regardless of the state
@@ -66,9 +67,9 @@ void Game::run() {
 
 
         // draw for current state
-        state_manager.getCurrentState()->draw();
+        state_manager.getCurrentState()->draw(renderer);
 
 
-        window_->display();
+        window_->display(renderer);
     }
 }

@@ -19,12 +19,8 @@ Sprite::Sprite(const sf::Image& image) {
     }
 }
 
-// TODO: maybe we don't actually need to copy this?
-std::unique_ptr<uint32_t[]> Sprite::getBuffer() {
-    auto out_buffer = std::make_unique<uint32_t[]>(width_ * height_);
-
-    memcpy(out_buffer.get(), pixel_buffer_.get(), width_ * height_  * sizeof(uint32_t));
-    return std::move(out_buffer);
+uint32_t* Sprite::getBuffer() {
+    return pixel_buffer_.get();
 }
 
 std::unique_ptr<Sprite> Sprite::create(const std::string& image_path) {

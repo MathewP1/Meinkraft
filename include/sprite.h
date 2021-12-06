@@ -17,7 +17,7 @@ class Sprite {
 public:
     explicit Sprite(const sf::Image& image);
     static std::unique_ptr<Sprite> create(const std::string& image_path);
-    std::unique_ptr<uint32_t[]> getBuffer(); // TODO: this should probably copy buffer to caller and std::move memory
+    uint32_t* getBuffer();
 private:
     uint32_t width_, height_;
     std::unique_ptr<uint32_t[]> pixel_buffer_;

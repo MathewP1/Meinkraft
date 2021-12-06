@@ -7,11 +7,13 @@
 
 #include <memory>
 
+#include "renderer.h"
+
 class State {
 public:
     virtual bool init() = 0;
     virtual void update() = 0;
-    virtual void draw() = 0;
+    virtual void draw(Renderer& renderer) = 0;
     virtual ~State() = default;
 };
 

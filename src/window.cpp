@@ -5,8 +5,7 @@
 #include "window.h"
 
 Window::Window(int game_width, int game_height) {
-    // TODO: fix strict aliasing issue (create uint32_t* buffer, cast to unsig char)
-    buffer_ = std::make_unique<unsigned char[]>(game_width * game_height * color_channels);
+    buffer_ = std::make_unique<uint32_t[]>(game_width * game_height);
     scale_x_ = width / game_width;
     scale_y_ = height / game_height;
 
@@ -14,16 +13,19 @@ Window::Window(int game_width, int game_height) {
     texture_.create(game_width, game_height);
 }
 
-uint32_t* Window::getBufferPtr() {
-    return reinterpret_cast<uint32_t*>(buffer_.get());
+uint32_t* Window::getBuffer() {
+    return buffer_.get();
 }
 
 sf::RenderWindow& Window::getWindow() {
     return window_;
 }
 
-void Window::display() {
-    texture_.update(buffer_.get());
+void Window::display(Renderer& renderer) {
+    // update buffer with pixels from renderer
+    renderer.fillBuffer(buffer_.get());
+    auto* buffer_ptr = reinterpret_cast<unsigned char*>(buffer_.get());
+    texture_.update(buffer_ptr);
     sprite_.setTexture(texture_);
     sprite_.setScale(scale_x_, scale_y_);
     window_.draw(sprite_);

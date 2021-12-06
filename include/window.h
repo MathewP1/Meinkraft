@@ -7,19 +7,21 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+#include "renderer.h"
+
 #ifndef MEINKRAFT_WINDOW_H
 #define MEINKRAFT_WINDOW_H
 
 class Window {
 public:
     Window(int game_width, int game_height);
-    void display();
-    uint32_t* getBufferPtr();
+    void display(Renderer& renderer);
+    uint32_t* getBuffer();
     sf::RenderWindow& getWindow();
 
     const unsigned int height = 1024;
     const unsigned int width = 1024;
-    const unsigned int color_channels = 4;
+//    const unsigned int color_channels = 4;
 private:
     sf::RenderWindow window_;
     sf::Texture texture_;
@@ -27,7 +29,7 @@ private:
 
     float scale_x_, scale_y_;
 
-    std::unique_ptr<unsigned char[]> buffer_;
+    std::unique_ptr<uint32_t[]> buffer_;
 
 };
 
