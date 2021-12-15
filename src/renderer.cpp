@@ -2,6 +2,7 @@
 // Created by mateusz on 12/6/21.
 //
 
+#include "config.h"
 #include "renderer.h"
 
 Renderer::Renderer(unsigned int width, unsigned int height) {
@@ -27,18 +28,22 @@ void Renderer::fillRect(int x, int y, int w, int h, Color c) {
 }
 
 void Renderer::drawSprite(Sprite& sprite, int x, int y, uint32_t color) {
-    std::cout << std::setfill('0') << std::setw(8) << std::hex << color << std::endl;
-    // TODO: temp solution - will draw at (0, 0)
-    for (int i = 0; i < 16; ++i) {
-        for (int j = 0; j < 16; ++j) {
-            int sprite_pixel = sprite.getBuffer()[i*16 + j]; // pixel will be in [0, 1, 2, 3]
-            if (sprite_pixel) {
-//                std::cout << (int)((color >> 16) & 0xFF) << std::endl;
-                pixels_[i * width_ + j] = (color >> (sprite_pixel * 8)) & 0xFF;
-            }
 
-        }
+  auto* sprite_buffer = sprite.getBuffer();
+
+  // TODO: when implementing camera, check if entirely offscreen
+
+  int dx = (x + SPRITE_SIZE < width_) ? x + SPRITE_SIZE : width_;
+  int dy = (y + SPRITE_SIZE < height_) ? y + SPRITE_SIZE : height_;
+
+  for (int sprite_i = 0, image_i = x; image_i < dx; ++sprite_i, ++image_i) {
+    for (int sprite_j = 0, image_j = y; image_j < dy; ++sprite_j, ++image_j) {
+      int sprite_pixel = sprite_buffer[sprite_i * SPRITE_SIZE + sprite_j];
+      if (sprite_pixel) {
+        pixels_[image_i * width_ + image_j] = (color >> (sprite_pixel*8)) & 0xFF;
+      }
     }
+  }
 }
 
 // TODO: tweak color palette

@@ -19,9 +19,7 @@ public:
     ~GameState() override = default;
 
 private:
-    std::unique_ptr<RenderEntity> entity_;
-
-
+    std::vector<std::unique_ptr<RenderEntity>> entities_;
 };
 
 

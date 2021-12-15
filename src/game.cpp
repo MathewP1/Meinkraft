@@ -47,7 +47,7 @@ void Game::run() {
     sf::Clock clock;
     sf::Time time_since_update = sf::Time::Zero;
     sf::Time update_time_step = sf::seconds(1.f / UPDATES_PER_SECOND);
-    renderer.fillRect(10, 10, 10, 10, Color::fromLimitedPalette(555));
+//    renderer.fillRect(10, 10, 10, 10, Color::fromLimitedPalette(555));
     // enter game loop
     while(window_->getWindow().isOpen()) {
         // handle event regardless of the state

@@ -15,11 +15,13 @@
 //  7. Add character that can move up, down, left, right
 //  8. Add light source to character and apply lighting with dithering
 
+// TODO: investigate threadpool based rendering (lights can be processed in paraller since it renders "a mask" for darkness?
+
 // tick - calculate how much movement, etc
 // update - apply movement
 // render - render to screen
 
-// gets base 10 digi [000 - 555] representing RGB color
+// gets base 10 digits [000 - 555] representing RGB color
 // returns palette index
 uint32_t mapToPaletteIndex(int c) {
     if (c < 0) {
